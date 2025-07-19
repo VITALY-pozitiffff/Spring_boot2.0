@@ -12,7 +12,6 @@ public class ShopControllerAdvice {
 
     @ExceptionHandler(NoSuchProductException.class)
     public ResponseEntity<ShopError> handleNoSuchProductException(NoSuchProductException exception) {
-        // Формируем объект org.skypro.skyshop_.model.error.ShopError с нужным кодом и сообщением
         ShopError shopError = new ShopError("PRODUCT_NOT_FOUND", "Запрошенный продукт не существует");
 
         return new ResponseEntity<>(shopError, HttpStatus.NOT_FOUND);

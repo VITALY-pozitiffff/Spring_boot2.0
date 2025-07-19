@@ -32,7 +32,7 @@ public class StorageService {
         UUID product3Id = UUID.randomUUID();
         products.put(product3Id, new DiscountedProduct(product3Id, "Кофе", new BigDecimal("300"), 10)); // Кофе со скидкой 10%, цена тоже BigDecimal
 
-        // Тестовые статьи
+
         UUID article1Id = UUID.randomUUID();
         articles.put(article1Id, new Article(article1Id, "Статья №1", "Это первая статья."));
 
