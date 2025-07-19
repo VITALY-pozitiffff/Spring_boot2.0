@@ -1,6 +1,7 @@
 package org.skypro.skyshop_.service;
 
 
+import org.skypro.skyshop_.exception.NoSuchProductException;
 import org.skypro.skyshop_.model.article.Article;
 import org.skypro.skyshop_.model.product.DiscountedProduct;
 import org.skypro.skyshop_.model.product.Product;
@@ -31,7 +32,7 @@ public class StorageService {
         UUID product3Id = UUID.randomUUID();
         products.put(product3Id, new DiscountedProduct(product3Id, "Кофе", new BigDecimal("300"), 10)); // Кофе со скидкой 10%, цена тоже BigDecimal
 
-        // Тестовые статьи
+
         UUID article1Id = UUID.randomUUID();
         articles.put(article1Id, new Article(article1Id, "Статья №1", "Это первая статья."));
 
@@ -40,7 +41,11 @@ public class StorageService {
     }
 
     public Optional<Product> getProductById(UUID id) {
-        return Optional.ofNullable(products.get(id));
+        Product product = products.get(id);
+        if (product == null) {
+            throw new NoSuchProductException("Продукт с указанным ID не найден!");
+        }
+        return Optional.of(product);
     }
 
     public Set<Product> getAllProducts() {

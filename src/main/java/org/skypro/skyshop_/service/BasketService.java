@@ -1,5 +1,6 @@
 package org.skypro.skyshop_.service;
 
+import org.skypro.skyshop_.exception.NoSuchProductException;
 import org.skypro.skyshop_.model.basket.BasketItem;
 import org.skypro.skyshop_.model.basket.ProductBasket;
 import org.skypro.skyshop_.model.basket.UserBasket;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,16 +23,15 @@ public class BasketService {
         this.storageService = storageService;
     }
 
-    // Уже реализованный метод добавления товара
     public void addProductToBasket(UUID productId) {
-        Optional<Product> productOpt = storageService.getProductById(productId);
-        if (!productOpt.isPresent()) {
-            throw new IllegalArgumentException("Продукт с таким id не найден.");
+        try {
+            Product product = storageService.getProductById(productId).get();
+            productBasket.addProduct(productId);
+        } catch (NoSuchProductException e) {
+            System.out.println(e.getMessage()); // Или обработайте иначе, например отправив сообщение клиенту
         }
-        productBasket.addProduct(productId);
     }
 
-    // Метод получения полной корзины пользователя
     public UserBasket getUserBasket() {
         Map<UUID, Integer> basketContents = productBasket.getCurrentBasket();
         List<BasketItem> basketItems = basketContents.entrySet().stream()
